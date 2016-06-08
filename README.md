@@ -4,8 +4,7 @@ A 3d model of a dragon is being deformed in real-time along a curve with a verte
 The curve is made by following a physicalized box.  
 
 <img src="images/242.gif" height="300">
-
-
+<img src="images/235.gif" height="300">
 
 # The story behind a gif
 
