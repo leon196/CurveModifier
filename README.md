@@ -1,6 +1,6 @@
 # What is happening in this gif ?
 
-A 3d model of a dragon is being deformed in real-time along a curve with a vertex shader.  
+A 3D model of a dragon is being deformed in real-time along a curve with a vertex shader.  
 The curve is made by following a physicalized box.  
 
 <img src="images/242.gif" height="300">
@@ -186,9 +186,9 @@ You can change the how quick you follow the target.
 # Alright folks
 
 Of course there is lot of things left to do. Like bugs fix, solid curve system and better user experience.    
-But I am just having fun with vertex shaders on my free time and feel satisfy with the actual prototype.  
+But I am just having fun with vertex shaders on my free time and feel satisfied with the actual prototype.  
 Feels free to contact me if you want to improve the project.  
 
 I would love to hear about your project if you are using my shader.  
 You can contact me on Twitter : [@leondenise](https://www.twitter.com/leondenise)  
-And please share you code like everyone else in this open source community <3
+And please share your code like everyone else in this open source community <3
