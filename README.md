@@ -49,7 +49,7 @@ I guess I'm fine with it since I'm just doing it to mess with shaders.
 
 In this repository, you will find the scripts and the shader.  
 
-<img src="images/ui1.png" height="200">
+<img src="images/ui1.PNG" height="200">
 
 The **CurveModifier.cs** is the base script used to simplify different cases of application.  
 His main function is to translate an array of vector into a texture.  
@@ -166,7 +166,7 @@ Because the shader won't change the mesh bounds.
 So the camera can be out of range.  
 And the model can disappear from the frustum culling.  
 
-<img src="images/ui2.png" width="300">
+<img src="images/ui2.PNG" width="300">
 
 ## Things to know about the Bezier Curve modifier
 
