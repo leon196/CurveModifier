@@ -1,3 +1,9 @@
+### Update : fixed curve issue
+- bezier curve edits can now be undo.  
+- deformation is now smooth all along the path  
+
+<img src="images/251.gif" height="300">
+
 # What is happening in this gif ?
 
 A 3D model of a dragon is being deformed in real-time along a curve with a vertex shader.  
@@ -154,18 +160,23 @@ And with luck, sometimes you find the right combination.
 #### You have to find the right curve axis.  
 <img src="images/246.gif" height="400">
 
-#### You can change the scale to adjust the curve distribution  
-<img src="images/244.gif" height="400">
-
 #### Changing position and rotation will have consequences  
 <img src="images/247.gif" height="400">
 
-#### There is chance that you will need a bigger culling bounds
-Because the shader won't change the mesh bounds.  
-So the camera can be out of range.  
-And the model can disappear from the frustum culling.  
+#### ~~You can change the scale to adjust the curve distribution~~  
+<img src="images/244.gif" height="200">
 
-<img src="images/ui2.PNG" width="300">
+#### You can adjust the curve distribution with these two parameters  
+<img src="images/254.gif" height="400">
+
+#### ~~There is chance that you will need a bigger culling bounds~~  
+~~Because the shader won't change the mesh bounds.~~  
+~~So the camera can be out of range.~~  
+~~And the model can disappear from the frustum culling.~~  
+
+<img src="images/ui2.PNG" width="200">
+
+#### Culling bounds is now auto calculated
 
 ## Things to know about the Bezier Curve modifier
 
