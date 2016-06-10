@@ -6,11 +6,12 @@ public class BezierCurveModifier : CurveModifier
 {
 	public BezierCurve bezierCurve;
 
-	void Start ()
+	void OnEnable ()
 	{
 		if (bezierCurve != null) {
 			resolution = bezierCurve.resolution;
 			Init();
+			CurveToTexture();
 		}
 	}
 
@@ -22,8 +23,17 @@ public class BezierCurveModifier : CurveModifier
 			return Vector3.zero;
 		}
 	}
-	
-	void Update () 
+
+	public override float GetCurveLength ()
+	{
+		if (bezierCurve != null) {
+			return bezierCurve.length;
+		} else {
+			return base.GetCurveLength();
+		}
+	}
+
+	void OnRenderObject () 
 	{
 		if (shouldUpdate) 
 		{

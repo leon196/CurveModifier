@@ -5,8 +5,9 @@ using System.Collections;
 public class ScriptCurveModifier : CurveModifier 
 {
 	public float radius = 10f;
+	public float height = 1f;
 
-	void Start ()
+	void OnEnable ()
 	{
 		Init();
 		CurveToTexture();
@@ -15,10 +16,10 @@ public class ScriptCurveModifier : CurveModifier
 	public override Vector3 GetCurvePoint (float ratio)
 	{
 		float angle = ratio * Mathf.PI * 2f;
-		return new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+		return new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle * 5) * height, Mathf.Sin(angle) * radius);
 	}
 	
-	void Update () 
+	void OnRenderObject () 
 	{
 		if (shouldUpdate) 
 		{

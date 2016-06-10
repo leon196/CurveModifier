@@ -9,12 +9,12 @@ public class FollowCurveModifier : CurveModifier
 	public float minimumDistance = 0.1f;
 	public float maximumDistance = 1f;
 
-	void Start ()
+	void OnEnable ()
 	{
 		Init();
 	}
 	
-	void Update () 
+	void OnRenderObject () 
 	{
 		if (shouldUpdate && target != null) 
 		{

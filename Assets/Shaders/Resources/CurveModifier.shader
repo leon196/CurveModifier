@@ -26,18 +26,25 @@ Shader "Custom/CurveModifier"
 			struct v2f {
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
+				float curveRatio : TEXCOORD1;
+				float3 color : COLOR;
 			};
 
 			sampler2D _MainTex;
 			sampler2D _CurveTexture;
+			sampler2D _CurveVectorUpTexture;
 			float4 _MainTex_ST;
 			fixed4 _Color;
 			float3 _Forward;
 			float3 _Up;
 			float3 _Right;
 			float _CurveResolution;
+			float _ShouldInverse;
 			float _ShouldLoop;
-			float _TimeSpeed;
+			float _CycleOffset;
+			float _CycleTime;
+			float _CurveScale;
+			float _PlanarScale;
 
 			// this function set the vertex position
 			v2f vert (appdata v) 
@@ -45,7 +52,7 @@ Shader "Custom/CurveModifier"
 				v2f o;
 
 				// use transform component
-				float4 vertex = mul(_Object2World, v.vertex);
+				float4 vertex = mul(_World2Object, v.vertex);
 
 				// axis setup (compress vectors into scalars)
 				float vertexForward = vertex.x * _Forward.x + vertex.y * _Forward.y + vertex.z * _Forward.z;
@@ -53,12 +60,12 @@ Shader "Custom/CurveModifier"
 				float vertexUp = vertex.x * _Up.x + vertex.y * _Up.y + vertex.z * _Up.z;
 
 				// the actual clamped ratio position on the curve
-				float ratio = abs(vertexForward + _Time.x * _TimeSpeed);
-				ratio = lerp(clamp(ratio, 0.0, 1.0), fmod(ratio, 1.0), _ShouldLoop);
+				float ratio = fmod(abs(vertexForward * _CurveScale + _CycleTime + _CycleOffset), 1.0);
+				ratio = lerp(ratio, 1.0 - ratio, _ShouldInverse);
 
 				// used to distribute point on the plane that is perpendicular to the curve forward
 				float angle = atan2(vertexUp, vertexRight);
-				float radius = length(float2(vertexRight, vertexUp));
+				float radius = length(float2(vertexRight * _PlanarScale, vertexUp * _PlanarScale));
 
 				// get current point through the texture
 				float4 p = float4(ratio, 0.0, 0.0, 0.0);
@@ -66,12 +73,10 @@ Shader "Custom/CurveModifier"
 
 				// get neighbors of the current ratio
 				float unit = 1.0 / _CurveResolution;
-				float ratioNext = fmod(ratio + unit, 1.0);
-				float ratioPrevious = fmod(ratio - unit + 1.0, 1.0);
-
-				// make things loop or not
-				ratioNext = lerp(clamp(abs(ratio + unit), 0.0, 1.0), ratioNext, _ShouldLoop);
-				ratioPrevious = lerp(clamp(abs(ratio - unit), 0.0, 1.0), ratioPrevious, _ShouldLoop);
+				float next = fmod(ratio + unit, 1.0);
+				float prev = fmod(ratio - unit + 1.0, 1.0);
+				float ratioNext = lerp(next, prev, _ShouldInverse);
+				float ratioPrevious = lerp(prev, next, _ShouldInverse);
 
 				// get next and previous point through the texture
 				p.x = ratioNext;
@@ -81,14 +86,18 @@ Shader "Custom/CurveModifier"
 
 				// find out vectors
 				float3 forward = normalize(bezierPointNext - bezierPoint);
-				float3 backward = normalize(bezierPointPrevious - bezierPoint);
-				float3 up = normalize(cross(forward, backward));
+				// float3 backward = normalize(bezierPointPrevious - bezierPoint);
+				float3 up = normalize(cross(normalize(bezierPoint), normalize(bezierPointNext)));
+				// float3 up = normalize(cross(forward, backward));
 				float3 right = normalize(cross(forward, up));
 
 				// voila
 				vertex.xyz = bezierPoint + right * cos(angle) * radius + up * sin(angle) * radius;
 
 				// unity stuff
+				o.curveRatio = lerp(ratio, -1.0, step(1.0, ratio + unit));
+				o.curveRatio = lerp(o.curveRatio, -1.0, step(ratio - unit, 0.0));
+				o.color = up;
 				o.vertex = mul(UNITY_MATRIX_MVP, vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return o;
@@ -97,9 +106,13 @@ Shader "Custom/CurveModifier"
 			// this function give the pixel color
 			fixed4 frag (v2f i) : SV_Target 
 			{
-				// unity stuff
 				fixed4 col = tex2D(_MainTex, i.uv) * _Color;
-				return col;
+				float unit = 1.0 / _CurveResolution;
+				if (i.curveRatio < 0.0) {
+					clip(_ShouldLoop - 0.5);
+				}
+				// return col;
+				return col * fixed4(i.color * 0.5 + 0.5, 1.0);
 			}
 			ENDCG
 		}

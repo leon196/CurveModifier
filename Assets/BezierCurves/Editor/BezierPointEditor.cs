@@ -111,7 +111,7 @@ public class BezierPointEditor : Editor {
 		Vector3 newGlobal1 = Handles.FreeMoveHandle(p.globalHandle1, p.transform.rotation, HandleUtility.GetHandleSize(p.globalHandle1)*0.15f, Vector3.zero, Handles.SphereCap);
 		
 		if(newGlobal1 != p.globalHandle1){
-			// Undo.RegisterUndo(p, "Move Handle");
+			Undo.RecordObject(p, "Move Handle");
 			p.globalHandle1 = newGlobal1;
 			p.globalHandle2 = -(newGlobal1 - p.position) + p.position;
 		}
@@ -119,7 +119,7 @@ public class BezierPointEditor : Editor {
 		Vector3 newGlobal2 = Handles.FreeMoveHandle(p.globalHandle2, p.transform.rotation, HandleUtility.GetHandleSize(p.globalHandle2)*0.15f, Vector3.zero, Handles.SphereCap);
 		
 		if(newGlobal2 != p.globalHandle2){
-			// Undo.RegisterUndo(p, "Move Handle");
+			Undo.RecordObject(p, "Move Handle");
 			p.globalHandle1 = -(newGlobal2 - p.position) + p.position;
 			p.globalHandle2 = newGlobal2;
 		}
@@ -133,13 +133,13 @@ public class BezierPointEditor : Editor {
 		
 		if(newGlobal1 != p.globalHandle1)
 		{
-			// Undo.RegisterUndo(p, "Move Handle");
+			Undo.RecordObject(p, "Move Handle");
 			p.globalHandle1 = newGlobal1;
 		}
 		
 		if(newGlobal2 != p.globalHandle2)
 		{
-			// Undo.RegisterUndo(p, "Move Handle");
+			Undo.RecordObject(p, "Move Handle");
 			p.globalHandle2 = newGlobal2;
 		}
 	}
