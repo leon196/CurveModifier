@@ -112,7 +112,7 @@ Shader "Custom/CurveModifier"
 					clip(_ShouldLoop - 0.5);
 				}
 				// return col;
-				return col * fixed4(i.color * 0.5 + 0.5, 1.0);
+				return col;// * fixed4(i.color * 0.5 + 0.5, 1.0);
 			}
 			ENDCG
 		}
