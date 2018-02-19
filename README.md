@@ -1,4 +1,9 @@
-### Update : fixed curve issue
+### Update Feb 19, 2018 : Very simple curve modifier example
+
+<img src="images/81.gif" height="300">
+<img src="images/81.png" height="300">
+
+### Update Jun 8, 2016 : fixed curve issue
 - bezier curve edits can now be undo.  
 - deformation is now smooth all along the path  
 
