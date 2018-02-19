@@ -1,3 +1,6 @@
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Custom/CurveModifier" 
 {
 	Properties 
@@ -52,7 +55,7 @@ Shader "Custom/CurveModifier"
 				v2f o;
 
 				// use transform component
-				float4 vertex = mul(_World2Object, v.vertex);
+				float4 vertex = mul(unity_WorldToObject, v.vertex);
 
 				// axis setup (compress vectors into scalars)
 				float vertexForward = vertex.x * _Forward.x + vertex.y * _Forward.y + vertex.z * _Forward.z;
@@ -69,7 +72,7 @@ Shader "Custom/CurveModifier"
 
 				// get current point through the texture
 				float4 p = float4(ratio, 0.0, 0.0, 0.0);
-				float3 bezierPoint = mul(_World2Object, tex2Dlod(_CurveTexture, p));
+				float3 bezierPoint = mul(unity_WorldToObject, tex2Dlod(_CurveTexture, p));
 
 				// get neighbors of the current ratio
 				float unit = 1.0 / _CurveResolution;
@@ -80,9 +83,9 @@ Shader "Custom/CurveModifier"
 
 				// get next and previous point through the texture
 				p.x = ratioNext;
-				float3 bezierPointNext = mul(_World2Object, tex2Dlod(_CurveTexture, p));
+				float3 bezierPointNext = mul(unity_WorldToObject, tex2Dlod(_CurveTexture, p));
 				p.x = ratioPrevious;
-				float3 bezierPointPrevious = mul(_World2Object, tex2Dlod(_CurveTexture, p));
+				float3 bezierPointPrevious = mul(unity_WorldToObject, tex2Dlod(_CurveTexture, p));
 
 				// find out vectors
 				float3 forward = normalize(bezierPointNext - bezierPoint);
@@ -98,7 +101,7 @@ Shader "Custom/CurveModifier"
 				o.curveRatio = lerp(ratio, -1.0, step(1.0, ratio + unit));
 				o.curveRatio = lerp(o.curveRatio, -1.0, step(ratio - unit, 0.0));
 				o.color = up;
-				o.vertex = mul(UNITY_MATRIX_MVP, vertex);
+				o.vertex = UnityObjectToClipPos(vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return o;
 			}

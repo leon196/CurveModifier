@@ -111,8 +111,6 @@ public class BezierCurve : MonoBehaviour {
 			return _length;
 		}
 	}
-
-	public bool shouldDrawCurve = true;
 	
 	#endregion
 	
@@ -129,16 +127,14 @@ public class BezierCurve : MonoBehaviour {
 	#region UnityFunctions
 	
 	void OnDrawGizmos () {
-		if (shouldDrawCurve) {
-			Gizmos.color = drawColor;
-			
-			if(points.Length > 1){
-				for(int i = 0; i < points.Length - 1; i++){
-					DrawCurve(points[i], points[i+1], resolution);
-				}
-				
-				if (close) DrawCurve(points[points.Length - 1], points[0], resolution);
+		Gizmos.color = drawColor;
+		
+		if(points.Length > 1){
+			for(int i = 0; i < points.Length - 1; i++){
+				DrawCurve(points[i], points[i+1], resolution);
 			}
+			
+			if (close) DrawCurve(points[points.Length - 1], points[0], resolution);
 		}
 	}
 	
@@ -223,7 +219,7 @@ public class BezierCurve : MonoBehaviour {
 	public Vector3 GetPointAt(float t)
 	{
 		if(t <= 0) return points[0].position;
-		// else if (t >= 1) return points[points.Length - 1].position;
+		else if (t >= 1) return points[points.Length - 1].position;
 		
 		float totalPercent = 0;
 		float curvePercent = 0;
@@ -248,7 +244,6 @@ public class BezierCurve : MonoBehaviour {
 		{
 			p1 = points[points.Length - 1];
 			p2 = points[0];
-			curvePercent = ApproximateLength(p1, p2, 10) / length;
 		}
 		
 		t -= totalPercent;
@@ -515,6 +510,7 @@ public class BezierCurve : MonoBehaviour {
 	
 	#endregion
 	
+	/* needs testing
 	public Vector3 GetPointAtDistance(float distance)
 	{
 		if(close)
@@ -555,6 +551,7 @@ public class BezierCurve : MonoBehaviour {
 		}
 		
 		distance -= totalLength;
-		return GetPoint(distance / curveLength, firstPoint.position, secondPoint.position);
+		return GetPoint(distance / curveLength, firstPoint, secondPoint);
 	}
+	*/
 }
