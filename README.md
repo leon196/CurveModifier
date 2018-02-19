@@ -20,10 +20,9 @@ float radius = length(position.xz);
 position.xyz = curvePosition + (right * cos(angle) + up * sin(angle)) * radius;
 ```
 
-[SimpleCurveModifier.shader](https://github.com/leon196/CurveModifier/blob/master/Assets/SimpleCurveModifier/SimpleCurveModifier.shader)
-
-Fish mesh by by Shakiller - CC Attribution
-https://sketchfab.com/models/358ad8ccbc1740af8c13f019d90adb18#
+[SimpleCurveModifier.shader](https://github.com/leon196/CurveModifier/blob/master/Assets/SimpleCurveModifier/SimpleCurveModifier.shader)  
+  
+[Fish mesh by by Shakiller - CC Attribution](https://sketchfab.com/models/358ad8ccbc1740af8c13f019d90adb18#)
 
 ### Update Jun 8, 2016 : fixed curve issue
 - bezier curve edits can now be undo.  
