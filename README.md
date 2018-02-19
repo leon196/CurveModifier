@@ -1,4 +1,31 @@
-### Update : fixed curve issue
+### Update Feb 19, 2018 : Very simple curve modifier example
+
+<img src="images/81.gif" height="300">
+<img src="images/81.png" height="300">
+
+#### The curve modifier in a vertex shader
+```HLSL
+float current = fmod(position.y, 1.);
+float next = fmod(current + .01, 1.);
+
+float3 curvePosition = tex2Dlod(_CurveTexture, float4(current,0,0,0)).xyz;
+float3 curvePositionNext = tex2Dlod(_CurveTexture, float4(next,0,0,0)).xyz;
+
+float3 forward = normalize(curvePositionNext - curvePosition);
+float3 up = normalize(cross(normalize(curvePositionNext), normalize(curvePosition)));
+float3 right = normalize(cross(forward, up));
+
+float angle = atan2(position.z, position.x);
+float radius = length(position.xz);
+position.xyz = curvePosition + (right * cos(angle) + up * sin(angle)) * radius;
+```
+
+[SimpleCurveModifier.shader](https://github.com/leon196/CurveModifier/blob/master/Assets/SimpleCurveModifier/SimpleCurveModifier.shader)
+
+Fish mesh by by Shakiller - CC Attribution
+https://sketchfab.com/models/358ad8ccbc1740af8c13f019d90adb18#
+
+### Update Jun 8, 2016 : fixed curve issue
 - bezier curve edits can now be undo.  
 - deformation is now smooth all along the path  
 
